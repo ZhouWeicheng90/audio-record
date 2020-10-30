@@ -1,13 +1,14 @@
 
 /**
  * 将声音采样数组 封装成 WAV格式的 音频文件数据（仅仅封装，不做转换）
- * @param {*} sampleArr 声音采样的数组,采样必须和传入的sampleRate，sampleBits，channelCount 一致，如果需要，请务必提前转换。
+ * @param {Float32Array} sampleArr 声音采样的数组,采样必须和传入的sampleRate，sampleBits，channelCount 一致，如果需要，请务必提前转换。
  * @param {*} sampleRate 采样率
  * @param {*} sampleBits 采样位数
  * @param {*} channelCount 声道
  * @returns {Blob} WAV格式的 音频文件数据
  */
 export default function (sampleArr, sampleRate, sampleBits, channelCount = 1) {
+
     let len = sampleArr.length * (sampleBits / 8);
     const data = new DataView(new ArrayBuffer(44 + len));
     let offset = 0;

@@ -29,15 +29,7 @@ export default function (inputSampleArr, inConfig, outConfig) {
     if (outConfig.sampleBits >= inConfig.sampleBits) {
         sampleBits = inConfig.sampleBits;
     } else {
-        throw '暂时不支持比特位的缩小压缩输出！'
-        // sampleBits = outConfig.sampleBits;
-        // // 要做缩小压缩
-        // let bitGap = inConfig.sampleBits - outConfig.sampleBits
-        // let mid = 1<< (outConfig.sampleBits-2)
-        // for (let i = 0; i < sampleArr.length; i++) {
-        //     sampleArr[i] >>= bitGap
-        //     sampleArr[i] += mid
-        // }
+        throw '暂时不支持比特位的缩小压缩输出！'       
     }
     return { sampleRate, sampleBits, sampleArr,channelCount };
 }

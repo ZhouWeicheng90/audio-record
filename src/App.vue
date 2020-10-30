@@ -1,49 +1,54 @@
 <template>
   <div>
-    <audio style="display:none" ref="audio" controls autoplay></audio>
-    <button v-if="isRecording" @click="pauseRec">暂停</button>
-    <button v-else @click="startRec">开始</button>
-    <button @click="clearRec">清理</button>
-    <button @click="playRec">播放</button>
+    <audio style="display: none" ref="audio" controls autoplay></audio>
+
+    <div v-if="recorded">
+      <button @click="playRec">播放</button>
+      <button @click="startRec">重录</button>      
+    </div>
+    <div v-else>
+      <button v-if="isRecording" @click="stopRec">停止</button>
+      <button v-else @click="startRec">开始</button>
+    </div>
   </div>
 </template>
 
 <script>
-import AudioRecorder from "./assets/record/record";
+import AudioRecorder from "./assets/record/newRecord";
 export default {
   name: "App",
   components: {},
   data() {
     return {
       isRecording: false,
-      audioRecord: null
+      recorded: false,
+      audioRecord: null,
     };
   },
   methods: {
-    startRec() {
+    startRec() {      
       this.audioRecord.start();
+      this.recorded = false;
       this.isRecording = true;
     },
-    pauseRec() {
-      this.audioRecord.pause();
+    stopRec() {
+      this.audioRecord.stop();
       this.isRecording = false;
-    },
-    clearRec() {
-      this.audioRecord.clear();
-      this.isRecording = false;
+      this.recorded = true;
     },
     playRec() {
-      this.isRecording = false;
-      this.$refs["audio"].src = window.URL.createObjectURL(
-        this.audioRecord.getBlob()
-      );
-    }
+      this.$refs["audio"].src = this.audioRecord.getUrl();
+    },
   },
   created() {
-    AudioRecorder.get(rec => {
-      this.audioRecord = rec;
-    });
-  }
+    AudioRecorder.get()
+      .then((rec) => {
+        this.audioRecord = rec;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
 };
 </script>
 
